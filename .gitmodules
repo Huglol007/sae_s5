@@ -1,0 +1,9 @@
+[submodule "qui-fait-quoi-quand"]
+	path = qui-fait-quoi-quand
+	url = git@gitlab.iut-valence.fr:aurye/sae-s5.git
+[submodule "Qui-fait-quoi-quand"]
+	path = Qui-fait-quoi-quand
+	url = git@gitlab.iut-valence.fr:aurye/sae-s5.git
+[submodule "Qui_fait_quoi_quand"]
+	path = Qui_fait_quoi_quand
+	url = git@gitlab.iut-valence.fr:aurye/sae-s5.git
