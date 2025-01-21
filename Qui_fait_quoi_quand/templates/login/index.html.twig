@@ -7,11 +7,14 @@
         background-color: #f4f4f9;
         margin: 0;
         padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Ajuste pour un alignement vertical parfait */
     }
 
     .login-container {
         max-width: 400px;
-        margin: 100px auto;
         background: #fff;
         padding: 20px 30px;
         border-radius: 10px;
@@ -82,27 +85,37 @@
     }
 </style>
 
-<div class="login-container">
-    <h1>Connexion</h1>
 
-    {% if error %}
-        <div class="alert">
-            {{ error.messageKey|trans(error.messageData, 'security') }}
+
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 400px;">
+        <div class="card-body">
+            <h1 class="card-title text-center">Connexion</h1>
+             {% if error %}
+                <div class="alert alert-danger">
+                    Identifiants invalides
+                </div>
+            {% endif %}
+
+            <form action="{{ path('app_login') }}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nom d'utilisateur :</label>
+                    <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe :</label>
+                    <input type="password" id="password" name="_password" class="form-control" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+            </form>
+
+
+            
         </div>
-    {% endif %}
-
-    <form action="{{ path('app_login') }}" method="post">
-        <label for="username">Nom d'utilisateur :</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" required>
-
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="_password" required>
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        <button type="submit">Se connecter</button>
-    </form>
-
-    <a href="#">Mot de passe oublié ?</a>
+    </div>
 </div>
 {% endblock %}
