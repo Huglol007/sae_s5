@@ -1,38 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page d'accueil{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Mon Application</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">À propos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-light" href="{{ path('app_logout') }}">Déconnexion</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 
+
+<!-- Contenu principal -->
 <div class="container mt-5">
     <div class="text-center">
         <h1 class="mb-4">Bienvenue sur la page d'accueil !</h1>
-        <p>Utilisez la barre de navigation pour explorer l'application.</p>
-        <a href="#" class="btn btn-primary">Commencer</a>
+        <p>Utilisez les boutons ci-dessous pour accéder aux différentes fonctionnalités.</p>
+    </div>
+
+    <!-- Boutons de navigation -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <a href="{{ path('app_jour_non_ouvre_index') }}" class="btn btn-danger w-100">🚫 Gérer les jours non ouvrés</a>
+        </div>
     </div>
 </div>
+
 {% endblock %}

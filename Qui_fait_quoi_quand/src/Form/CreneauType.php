@@ -37,6 +37,7 @@ class CreneauType extends AbstractType
                 'class' => Promotion::class,
                 'choice_label' => 'id',
             ])
+
         ;
     }
 
