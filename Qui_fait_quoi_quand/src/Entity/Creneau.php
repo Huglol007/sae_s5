@@ -14,25 +14,32 @@ class Creneau
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column(type: 'datetime')]
+    private \DateTime $start_date;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $end_date = null;
+
+    #[ORM\Column(nullable: true)]
     private ?int $duree = null;
 
+    #[ORM\Column(type: 'string', length: 50, options: ['default' => 'cours'])]
+    private string $type = 'cours';
+
+
     #[ORM\ManyToOne(inversedBy: 'creneaus')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Matiere $matiere = null;
 
     #[ORM\ManyToOne(inversedBy: 'creneaus')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $enseignant = null;
 
     #[ORM\ManyToOne(inversedBy: 'creneaus')]
     private ?Ressource $ressource = null;
 
     #[ORM\ManyToOne(inversedBy: 'creneaux')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Promotion $promotion = null;
 
     public function getId(): ?int
@@ -40,15 +47,27 @@ class Creneau
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+
+
+    public function getStartDate(): \DateTime
     {
-        return $this->date;
+        return $this->start_date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setStartDate(\DateTime $start_date): self
     {
-        $this->date = $date;
+        $this->start_date = $start_date;
+        return $this;
+    }
 
+    public function getEndDate(): ?\DateTime
+    {
+        return $this->end_date;
+    }
+
+    public function setEndDate(?\DateTime $end_date): self
+    {
+        $this->end_date = $end_date;
         return $this;
     }
 
@@ -61,6 +80,17 @@ class Creneau
     {
         $this->duree = $duree;
 
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
         return $this;
     }
 

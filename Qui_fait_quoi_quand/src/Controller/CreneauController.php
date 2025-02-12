@@ -71,11 +71,39 @@ final class CreneauController extends AbstractController
     #[Route('/{id}', name: 'app_creneau_delete', methods: ['POST'])]
     public function delete(Request $request, Creneau $creneau, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$creneau->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $creneau->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($creneau);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_creneau_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    // // // // //
+    #[Route('/creneaux', name: 'app_creneaux', methods: ['GET'])]
+    public function getCreneaux(CreneauRepository $creneauRepository): JsonResponse
+    {
+        $creneaux = $creneauRepository->findAll();
+
+        $data = [];
+        foreach ($creneaux as $creneau) {
+            $data[] = [
+                'id' => $creneau->getId(),
+                'title' => $creneau->getMatiere()->getName(), // Nom de la matière
+                'start' => $creneau->getDate()->format('Y-m-d') . 'T' . date('H:i:s', strtotime('+' . $creneau->getDuree() . ' minutes', strtotime($creneau->getDate()->format('H:i:s')))),
+                'end' => $creneau->getDate()->format('Y-m-d') . 'T' . $creneau->getDate()->format('H:i:s'),
+                'color' => '#007bff', // Couleur personnalisée pour différencier les cours
+            ];
+        }
+
+        return $this->json($data);
+    }
+
+
+
+
+
+
+
+
 }
