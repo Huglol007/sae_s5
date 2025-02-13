@@ -4,12 +4,13 @@ stages:
 deploy:
   stage: deploy
   before_script:
-    - 'eval $(ssh-agent -s)'  # Démarrer l'agent SSH
-    - 'echo "$GITHUB_SSH_KEY" | ssh-add -'  # Ajouter la clé privée
-    - 'mkdir -p ~/.ssh && echo "StrictHostKeyChecking no" >> ~/.ssh/config'  # Désactiver confirmation SSH
+    - 'eval $(ssh-agent -s)'
+    - 'echo "$GITHUB_SSH_KEY" | ssh-add -'
+    - 'mkdir -p ~/.ssh && echo "StrictHostKeyChecking no" >> ~/.ssh/config'
   script:
-    - 'git remote add github git@github.com:Huglol007/sae_s5.git || true'  # Ajoute un remote GitHub (ignore si déjà existant)
-    - 'git branch -a'
-    - 'git push --force github main'  # Pousse sur GitHub (force update)
+    - 'git fetch --all'
+    - 'git checkout main'
+    - 'git remote add github git@github.com:Huglol007/sae_s5.git || true'
+    - 'git push --force github main'
   rules:
-    - if: '$CI_COMMIT_BRANCH'  # Déploie sur toutes les branches
+    - if: '$CI_COMMIT_BRANCH'
