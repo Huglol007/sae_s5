@@ -1,16 +1,12 @@
-stages:
-  - deploy
-
 deploy:
   stage: deploy
-  before_script:
-    - 'eval $(ssh-agent -s)'
-    - 'echo "$GITHUB_SSH_KEY" | ssh-add -'
-    - 'mkdir -p ~/.ssh && echo "StrictHostKeyChecking no" >> ~/.ssh/config'
   script:
-    - 'git fetch --all'
-    - 'git checkout main'
-    - 'git remote add github git@github.com:Huglol007/sae_s5.git || true'
-    - 'git push github HEAD:main'
+    - eval $(ssh-agent -s)
+    - echo "$GITHUB_SSH_KEY" | base64 -d | ssh-add -
+    - mkdir -p ~/.ssh
+    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - ssh -T git@github.com
+    - git remote add github git@github.com:Huglol007/sae_s5.git || true
+    - git push --force github main
   rules:
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH == "main"'
