@@ -11,6 +11,6 @@ deploy:
     - 'git fetch --all'
     - 'git checkout main'
     - 'git remote add github git@github.com:Huglol007/sae_s5.git || true'
-    - 'git push --force github HEAD:main'
+    - 'git push github HEAD:main'
   rules:
     - if: '$CI_COMMIT_BRANCH'
