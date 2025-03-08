@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Ressources{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">📚 Gestion des Ressources</h1>
+
+    <div class="row mt-4">
+        <!-- Formulaire d'ajout -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ajouter une Ressource</h5>
+                    <form action="{{ path('admin_ressource_add') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nom de la ressource</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <input type="text" class="form-control" id="type" name="type" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="state" class="form-label">État</label>
+                            <select class="form-control" id="state" name="state">
+                                <option value="Disponible">Disponible</option>
+                                <option value="En cours d'utilisation">En cours d'utilisation</option>
+                                <option value="Hors service">Hors service</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="semestre" class="form-label">Semestre</label>
+                            <select name="semestre" id="semestre" class="form-control">
+                                <option value="S1">Semestre 1</option>
+                                <option value="S2">Semestre 2</option>
+                                <option value="S3">Semestre 3</option>
+                                <option value="S4">Semestre 4</option>
+                                <option value="S5">Semestre 5</option>
+                                <option value="S6">Semestre 6</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="matieres" class="form-label">Matières associées</label>
+                            <select name="matieres[]" id="matieres" class="form-control" multiple>
+                                {% for matiere in matieres %}
+                                    <option value="{{ matiere.id }}">{{ matiere.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Ajouter</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des ressources -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Liste des Ressources</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ressource in ressources %}
+                                <tr>
+                                    <td>{{ ressource.id }}</td>
+                                    <td>{{ ressource.name }}</td>
+                                    <td>
+                                        <a href="{{ path('admin_ressource_delete', { 'id': ressource.id }) }}" class="btn btn-danger btn-sm">🗑 Supprimer</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center">Aucune ressource disponible.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

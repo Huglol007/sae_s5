@@ -6,6 +6,8 @@ use App\Repository\RessourceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Matiere;
+
 
 #[ORM\Entity(repositoryClass: RessourceRepository::class)]
 class Ressource
@@ -24,8 +26,20 @@ class Ressource
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $state = null;
 
+    #[ORM\Column(length: 10)]
+    private ?string $semestre = 'S1';
+
+
     #[ORM\ManyToOne(inversedBy: 'ressources')]
     private ?User $referent = null;
+
+    /**
+     * @var Collection<int, Matiere>
+     */
+    #[ORM\ManyToMany(targetEntity: Matiere::class, inversedBy: "ressources")]
+    #[ORM\JoinTable(name: "ressource_matiere")]
+    private Collection $matieres;
+
 
     /**
      * @var Collection<int, Creneau>
@@ -33,8 +47,10 @@ class Ressource
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'ressource')]
     private Collection $creneaus;
 
+
     public function __construct()
     {
+        $this->matieres = new ArrayCollection();
         $this->creneaus = new ArrayCollection();
     }
 
@@ -78,6 +94,17 @@ class Ressource
 
         return $this;
     }
+    public function getSemestre(): ?string
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(string $semestre): static
+    {
+        $this->semestre = $semestre;
+        return $this;
+    }
+
 
     public function getReferent(): ?User
     {
@@ -120,4 +147,31 @@ class Ressource
 
         return $this;
     }
+    /**
+     * @return Collection<int, Matiere>
+     */
+    public function getMatieres(): Collection
+    {
+        return $this->matieres;
+    }
+
+    public function addMatiere(Matiere $matiere): static
+    {
+        if (!$this->matieres->contains($matiere)) {
+            $this->matieres->add($matiere);
+            $matiere->addRessource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatiere(Matiere $matiere): static
+    {
+        if ($this->matieres->removeElement($matiere)) {
+            $matiere->removeRessource($this);
+        }
+
+        return $this;
+    }
+
 }

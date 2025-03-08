@@ -6,6 +6,9 @@ use App\Repository\MatiereRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Ressource;
+
+
 
 #[ORM\Entity(repositoryClass: MatiereRepository::class)]
 class Matiere
@@ -23,6 +26,12 @@ class Matiere
 
     #[ORM\ManyToOne(inversedBy: 'matieres')]
     private ?User $enseignant = null;
+    /**
+     * @var Collection<int, Ressource>
+     */
+    #[ORM\ManyToMany(targetEntity: Ressource::class, mappedBy: "matieres")]
+    private Collection $ressources;
+
 
     /**
      * @var Collection<int, Creneau>
@@ -32,6 +41,7 @@ class Matiere
 
     public function __construct()
     {
+        $this->ressources = new ArrayCollection();
         $this->creneaus = new ArrayCollection();
     }
 
@@ -105,4 +115,32 @@ class Matiere
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Ressource>
+     */
+    public function getRessources(): Collection
+    {
+        return $this->ressources;
+    }
+
+    public function addRessource(Ressource $ressource): static
+    {
+        if (!$this->ressources->contains($ressource)) {
+            $this->ressources->add($ressource);
+            $ressource->addMatiere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRessource(Ressource $ressource): static
+    {
+        if ($this->ressources->removeElement($ressource)) {
+            $ressource->removeMatiere($this);
+        }
+
+        return $this;
+    }
+
 }
