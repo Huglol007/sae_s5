@@ -2,8 +2,9 @@
 
 use Symfony\Component\Dotenv\Dotenv;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+// Crée une instance de Dotenv
+$dotenv = new Dotenv();
 
-if (file_exists(dirname(__DIR__).'/.env')) {
-    (new Dotenv())->load(dirname(__DIR__).'/.env');
-}
+// Charger le fichier .env
+$dotenv->load(__DIR__.'/.env');
+
