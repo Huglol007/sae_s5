@@ -23,12 +23,6 @@ ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=
 # Copier le projet
 COPY . .
 
-# Installer Symfony Flex (pour activer les plugins)
-RUN composer global require symfony/flex
-
-# Forcer l'installation de symfony/runtime si nécessaire
-RUN composer require symfony/runtime
-
 # Installer les dépendances PHP sans le mode dev
 RUN composer install --no-dev --optimize-autoloader
 

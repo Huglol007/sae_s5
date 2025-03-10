@@ -80,13 +80,14 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "php bin/console cache:clear --no-warmup",
-            "php bin/console assets:install --relative"
+            "php -dvariables_order=EGPCS bin/console cache:clear --no-warmup",
+            "php -dvariables_order=EGPCS bin/console assets:install --relative"
         ],
         "post-update-cmd": [
-            "php bin/console cache:clear --no-warmup",
-            "php bin/console assets:install --relative"
+            "php -dvariables_order=EGPCS bin/console cache:clear --no-warmup",
+            "php -dvariables_order=EGPCS bin/console assets:install --relative"
         ]
+
     },
 
     "conflict": {
