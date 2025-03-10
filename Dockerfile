@@ -34,8 +34,6 @@ RUN composer install --no-dev --optimize-autoloader
 # Forcer l'installation de symfony/runtime si nécessaire
 RUN composer require symfony/runtime
 
-# Supprimer le fichier `.env` pour éviter toute utilisation
-RUN rm -f .env .env.local .env.dev .env.test
 
 # Installer les dépendances front-end et construire les assets
 RUN npm install && npm run build
