@@ -28,7 +28,6 @@ RUN rm -f .env .env.local .env.dev .env.test
 
 
 # Installer les dépendances PHP sans le mode dev
-RUN composer install --no-dev --optimize-autoloader
 
 # Exécuter manuellement les commandes nécessaires après l'installation des dépendances
 RUN php bin/console cache:clear --env=prod --no-warmup
