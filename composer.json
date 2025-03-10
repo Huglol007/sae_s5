@@ -78,9 +78,9 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony console cache:clear",
-            "assets:install": "symfony console assets:install public",
-            "importmap:install": "symfony console importmap:install"
+            "cache:clear": "@php bin/console cache:clear",
+            "assets:install": "@php bin/console assets:install public",
+            "importmap:install": "@php bin/console importmap:install"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -89,6 +89,7 @@
             "@auto-scripts"
         ]
     },
+
 
     "conflict": {
         "symfony/symfony": "*"
