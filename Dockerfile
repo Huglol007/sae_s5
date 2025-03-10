@@ -26,9 +26,11 @@ ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=
 # Copier le projet
 COPY . .
 
-RUN composer require symfony/runtime
-RUN composer install --no-dev --optimize-autoloader
+
 # Installer les dépendances PHP sans le mode dev
+RUN composer install --no-dev --optimize-autoloader
+
+RUN composer require symfony/runtime
 RUN composer install --no-dev --optimize-autoloader
 
 # Supprimer le fichier `.env` pour forcer Symfony à utiliser les variables d'environnement
