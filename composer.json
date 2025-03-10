@@ -19,7 +19,7 @@
         "symfony/doctrine-messenger": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/expression-language": "7.2.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.5",
         "symfony/form": "7.2.*",
         "symfony/framework-bundle": "7.2.*",
         "symfony/http-client": "7.2.*",
@@ -78,9 +78,9 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "cache:clear",
-            "assets:install": "assets:install",
-            "importmap:install": "importmap:install"
+            "cache:clear": "symfony console cache:clear",
+            "assets:install": "symfony console assets:install public",
+            "importmap:install": "symfony console importmap:install"
         },
         "post-install-cmd": [
             "@auto-scripts"
