@@ -19,12 +19,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Définir les variables d'environnement directement
 ENV APP_ENV=prod
 ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=14&charset=utf8"
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
 
 # Copier le projet
 COPY . .
 
+COPY .env .env
+
+# Installer Symfony Flex (pour activer les plugins)
+RUN composer global require symfony/flex
+
+# Forcer l'installation de symfony/runtime si nécessaire
+RUN composer require symfony/runtime
 
 # Installer les dépendances PHP sans le mode dev
 RUN composer install --no-dev --optimize-autoloader
