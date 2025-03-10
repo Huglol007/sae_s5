@@ -83,6 +83,7 @@
             "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
+            "php -r 'echo \"APP_ENV=\" . (getenv(\"APP_ENV\") ?: \"not set\") . \"\\n\";'",
             "@auto-scripts"
         ],
         "post-update-cmd": [
