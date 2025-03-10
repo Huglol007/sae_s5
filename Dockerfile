@@ -5,16 +5,16 @@ WORKDIR /var/www/html
 # Installer les dépendances système
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libpng-dev libjpeg-dev libfreetype6-dev \
-    curl gnupg2 lsb-release ca-certificates \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql
+
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Installer Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
-
-# Installer Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Définir les variables d'environnement directement
 ENV APP_ENV=prod
@@ -32,8 +32,8 @@ RUN composer install --no-dev --optimize-autoloader
 # Construire les assets front-end
 RUN npm install && npm run build
 
-# Vérifier que les variables d'environnement sont bien chargées
-RUN php -r 'echo "APP_ENV=" . (getenv("APP_ENV") ?: "not set") . "\n";'
+# Vérifier que Symfony CLI est installé et accessible
+RUN symfony -v
 
 # Exposer le port (si nécessaire)
 EXPOSE 8000
