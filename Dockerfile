@@ -16,23 +16,27 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Définir les variables d'environnement directement
+# Définir les variables d'environnement sans .env
 ENV APP_ENV=prod
 ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=14&charset=utf8"
+ENV SYMFONY_ENV=prod
 
-# Copier le projet
+# Copier les fichiers du projet (sans .env)
 COPY . .
 
 # Installer les dépendances PHP sans le mode dev
 RUN composer install --no-dev --optimize-autoloader
 
-# Supprimer le fichier `.env` pour forcer Symfony à utiliser les variables d'environnement
+# Forcer l'installation de symfony/runtime si nécessaire
+RUN composer require symfony/runtime
+
+# Supprimer le fichier `.env` pour éviter toute utilisation
 RUN rm -f .env .env.local .env.dev .env.test
 
 # Installer les dépendances front-end et construire les assets
 RUN npm install && npm run build
 
-# Exposer le port (si nécessaire)
+# Exposer le port
 EXPOSE 8000
 
 # Commande par défaut
