@@ -10,6 +10,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Installation des dépendances PHP et Node.js
 WORKDIR /var/www/html
 COPY . .
+ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
