@@ -5,8 +5,13 @@ WORKDIR /var/www/html
 # Installer les dépendances système
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libpng-dev libjpeg-dev libfreetype6-dev \
+    curl gnupg2 lsb-release ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql
+
+# Installer Symfony CLI
+RUN curl -sS https://get.symfony.com/cli/installer | bash
+RUN mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
