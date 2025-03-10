@@ -25,15 +25,6 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 # Copier le projet
 COPY . .
 
-# Installer Symfony Flex (pour activer les plugins)
-RUN composer global require symfony/flex
-# Ajouter un délai après l'installation de Symfony Flex
-RUN sleep 5
-
-# Forcer l'installation de symfony/runtime si nécessaire
-RUN composer require symfony/runtime
-# Ajouter un délai après l'installation de symfony/runtime
-RUN sleep 5
 
 # Installer les dépendances PHP sans le mode dev
 RUN composer install --no-dev --optimize-autoloader
