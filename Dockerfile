@@ -9,19 +9,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql
 
-
-
-
 # Installer Node.js et npm
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-RUN composer require symfony/runtime
-
-RUN composer global require symfony/flex
 
 # Définir les variables d'environnement directement
 ENV APP_ENV=prod
@@ -30,21 +23,24 @@ ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=
 # Copier le projet
 COPY . .
 
+# Installer Symfony Flex (pour activer les plugins)
+RUN composer global require symfony/flex
+# Ajouter un délai après l'installation de Symfony Flex
+RUN sleep 5
+
+# Forcer l'installation de symfony/runtime si nécessaire
+RUN composer require symfony/runtime
+# Ajouter un délai après l'installation de symfony/runtime
+RUN sleep 5
 
 # Installer les dépendances PHP sans le mode dev
 RUN composer install --no-dev --optimize-autoloader
 
-
-
 # Supprimer le fichier `.env` pour forcer Symfony à utiliser les variables d'environnement
 RUN rm -f .env .env.local .env.dev .env.test
 
-
 # Installer les dépendances front-end et construire les assets
 RUN npm install && npm run build
-
-# Vérifier que les variables d'environnement sont bien chargées
-# RUN php -r 'echo "APP_ENV=" . (getenv("APP_ENV") ?: "not set") . "\n";"
 
 # Exposer le port (si nécessaire)
 EXPOSE 8000
