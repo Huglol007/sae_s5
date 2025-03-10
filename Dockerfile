@@ -9,25 +9,25 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql
 
-RUN composer require symfony/runtime
-RUN composer install --no-dev --optimize-autoloader
 
 
 
+# Installer Node.js et npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
 
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Installer Node.js et npm
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    
 # Définir les variables d'environnement directement
 ENV APP_ENV=prod
 ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=14&charset=utf8"
 
 # Copier le projet
 COPY . .
+
+RUN composer require symfony/runtime
+RUN composer install --no-dev --optimize-autoloader
 # Installer les dépendances PHP sans le mode dev
 RUN composer install --no-dev --optimize-autoloader
 
