@@ -11,10 +11,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 ENV COMPOSER_ALLOW_SUPERUSER=1
-ENV APP_ENV=prod
+ENV APP_ENV=${APP_ENV:-prod}
 ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=14&charset=utf8"
 
-RUN composer install --no-dev --optimize-autoloader
+RUN --mount=type=secret,id=env composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 RUN php -r 'echo "APP_ENV=" . (getenv("APP_ENV") ?: "not set") . "\n";'
 
