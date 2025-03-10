@@ -80,10 +80,10 @@
     },
     "scripts": {
         "auto-scripts": {
-
+            "cache:clear": "script",
+            "assets:install %PUBLIC_DIR%": "script"
         },
         "post-install-cmd": [
-            "php -r 'echo \"APP_ENV=\" . (getenv(\"APP_ENV\") ?: \"not set\") . \"\\n\";'",
             "@auto-scripts"
         ],
         "post-update-cmd": [
