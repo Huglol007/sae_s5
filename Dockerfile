@@ -9,12 +9,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql
 
+# Installer Node.js et npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
+
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Installer Symfony CLI
-RUN curl -sS https://get.symfony.com/cli/installer | bash
-RUN mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
 # Définir les variables d'environnement directement
 ENV APP_ENV=prod
@@ -26,17 +26,11 @@ COPY . .
 # Supprimer le fichier `.env` pour forcer Symfony à utiliser les variables d'environnement
 RUN rm -f .env .env.local .env.dev .env.test
 
-
-# Installer les dépendances PHP sans le mode dev
-RUN composer install --no-dev --optimize-autoloader
-
-
-
-# Construire les assets front-end
+# Installer les dépendances front-end et construire les assets
 RUN npm install && npm run build
 
-# Vérifier que Symfony CLI est installé et accessible
-RUN symfony -v
+# Vérifier que les variables d'environnement sont bien chargées
+# RUN php -r 'echo "APP_ENV=" . (getenv("APP_ENV") ?: "not set") . "\n";"
 
 # Exposer le port (si nécessaire)
 EXPOSE 8000
