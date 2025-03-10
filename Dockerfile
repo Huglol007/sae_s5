@@ -19,7 +19,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Définir les variables d'environnement sans .env
 ENV APP_ENV=prod
 ENV DATABASE_URL="postgresql://hugo:password@127.0.0.1:5432/sae_5?serverVersion=14&charset=utf8"
-ENV SYMFONY_ENV=prod
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 
 # Copier les fichiers du projet (sans .env)
 COPY . .
