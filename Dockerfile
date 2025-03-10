@@ -28,11 +28,9 @@ RUN rm -f .env .env.local .env.dev .env.test
 
 
 # Installer les dépendances PHP sans le mode dev
+RUN composer install --no-dev --optimize-autoloader
 
-# Exécuter manuellement les commandes nécessaires après l'installation des dépendances
-RUN php bin/console cache:clear --env=prod --no-warmup
-RUN php bin/console assets:install public --env=prod
-RUN php bin/console importmap:install --env=prod
+
 
 # Construire les assets front-end
 RUN npm install && npm run build
