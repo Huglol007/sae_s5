@@ -18,6 +18,16 @@
             <div class="container-fluid">
                 <!-- Logo / Accueil -->
                 <a class="navbar-brand" href="{{ path('app_home') }}">🏠 Qui Fait Quoi Quand</a>
+                   <!-- Informations de l'utilisateur -->
+                   {% if app.user %}
+                       <span class="navbar-text text-white me-3">
+                           👤 {{ app.user.username }} ({{ app.user.roles | first }})
+                       </span>
+                   {% endif %}
+
+
+
+
 
                 <!-- Bouton Burger -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
