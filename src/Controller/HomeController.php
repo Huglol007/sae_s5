@@ -14,7 +14,7 @@ final class HomeController extends AbstractController
 
 {
 
-    
+
 
     #[Route('/test-login', name: 'app_test_login')]
     public function testLogin(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher)
