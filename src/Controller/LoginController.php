@@ -13,7 +13,7 @@ final class LoginController extends AbstractController
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         // 🔍 Debug : Vérifier si le contrôleur est bien appelé
-
+        dump($_SERVER); die();
         // Récupère l'erreur de connexion s'il y en a
         $error = $authenticationUtils->getLastAuthenticationError();
 
