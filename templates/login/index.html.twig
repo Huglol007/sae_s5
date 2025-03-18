@@ -118,4 +118,34 @@
         </div>
     </div>
 </div>
+<script>
+    console.log("🚀 Début du script de debug en JS");
+
+
+    {% if error %}
+        console.error("🔴 Erreur de connexion détectée :", {{ error|json_encode|raw }});
+    {% else %}
+        console.log("✅ Aucune erreur d'authentification détectée.");
+    {% endif %}
+
+    console.log("🟢 Dernier username utilisé :", {{ last_username|json_encode|raw }});
+
+    console.log("📡 Envoi du formulaire testé...");
+    document.querySelector('form')?.addEventListener('submit', function(event) {
+        console.log("📤 Formulaire soumis !");
+    });
+
+    console.log("🔍 Vérification des cookies : ", document.cookie);
+
+    console.log("🎯 Vérification des headers de requête...");
+    fetch(window.location.href, {
+        method: "GET"
+    }).then(response => {
+        console.log("📥 Réponse HTTP Status :", response.status);
+        console.log("📡 Headers :", [...response.headers]);
+    }).catch(error => console.error("⚠️ Erreur lors de la requête :", error));
+
+    console.log("🚀 Fin du script de debug en JS");
+</script>
+
 {% endblock %}
