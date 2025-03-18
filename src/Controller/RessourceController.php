@@ -42,7 +42,7 @@ final class RessourceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_ressource_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_ressource_show', methods: ['GET'])]
     public function show(Ressource $ressource): Response
     {
         return $this->render('ressource/show.html.twig', [
@@ -50,7 +50,7 @@ final class RessourceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_ressource_edit', methods: ['GET', 'POST'])]
+    #[Route('/show/{id}/edit', name: 'app_ressource_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Ressource $ressource, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RessourceType::class, $ressource);
@@ -68,7 +68,7 @@ final class RessourceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_ressource_delete', methods: ['POST'])]
+    #[Route('/show/{id}', name: 'app_ressource_delete', methods: ['POST'])]
     public function delete(Request $request, Ressource $ressource, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ressource->getId(), $request->getPayload()->getString('_token'))) {

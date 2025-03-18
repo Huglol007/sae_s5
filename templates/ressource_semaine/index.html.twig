@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Ressources{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Mes Ressources</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Professeur référent</h3>
+            <button class="btn btn-primary w-100">Cours</button>
+            <button class="btn btn-secondary w-100 mt-2">Ressources</button>
+        </div>
+
+        <div class="col-md-4">
+            <h3>Ressources disponibles</h3>
+            {% for ressource in ressources %}
+                <div class="resource-item">
+                    <input type="radio" name="selected_ressource" value="{{ ressource.id }}" id="ressource_{{ ressource.id }}">
+                    <label for="ressource_{{ ressource.id }}">{{ ressource.name }}</label>
+                </div>
+            {% else %}
+                <p>Aucune ressource disponible.</p>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <h3>Détails</h3>
+            <div id="ressource-details">
+                <p>Sélectionnez une ressource.</p>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary mt-3" id="open_calendar" disabled>Configurer la répartition</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const resourceRadios = document.querySelectorAll('input[name="selected_ressource"]');
+    const detailsDiv = document.getElementById('ressource-details');
+    const openCalendarBtn = document.getElementById('open_calendar');
+
+    resourceRadios.forEach(radio => {
+        radio.addEventListener('change', function () {
+            openCalendarBtn.disabled = false;
+            detailsDiv.innerHTML = `<p>Vous avez sélectionné : <strong>${this.nextElementSibling.innerText}</strong></p>`;
+            openCalendarBtn.dataset.ressourceId = this.value;
+        });
+    });
+
+    openCalendarBtn.addEventListener('click', function () {
+        const ressourceId = this.dataset.ressourceId;
+        if (ressourceId) {
+            window.location.href = `/ressource/semaine/new?ressource=${ressourceId}`;
+        }
+    });
+});
+</script>
+{% endblock %}

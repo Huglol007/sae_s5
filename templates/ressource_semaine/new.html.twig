@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New RessourceSemaine{% endblock %}
+
+{% block body %}
+    <h1>Create new RessourceSemaine</h1>
+
+    {{ include('ressource_semaine/_form.html.twig') }}
+
+    <a href="{{ path('app_ressource_semaine_index') }}">back to list</a>
+{% endblock %}

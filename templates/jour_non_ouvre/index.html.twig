@@ -27,6 +27,16 @@
             {% endfor %}
         </div>
     </div>
+<div class="mb-3">
+    <label for="promotion" class="form-label">Promotion :</label>
+    <select id="promotion" name="promotion" class="form-control" required>
+        <option value="">Toutes les promotions</option>
+        <option value="1A">1A</option>
+        <option value="2A">2A</option>
+        <option value="3A">3A</option>
+    </select>
+</div>
+
 
     <div class="row">
         <!-- Colonne de gauche : Formulaires d'ajout et de suppression -->
@@ -35,6 +45,14 @@
             <div class="card shadow-sm p-4 mb-4">
                 <h3 class="mb-3">Ajouter une Plage de Jours</h3>
                 <form method="POST" action="{{ path('app_ajouter_jour') }}" id="add-form">
+                    <div class="mb-3">
+                        <label for="promotion_select" class="form-label">Promotion :</label>
+                        <select id="promotion_select" name="promotion" class="form-control" required>
+                            <option value="1A">1A</option>
+                            <option value="2A">2A</option>
+                            <option value="3A">3A</option>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Début :</label>
                         <input type="date" id="start_date" name="start_date" class="form-control" required>
@@ -138,7 +156,11 @@
                         {% elseif jour.type == 'sae' %}'purple'
                         {% else %}'gray'
                         {% endif %},
-                    className: 'jour-{{ jour.type }}'
+                    className: 'jour-{{ jour.type }}',
+                    promotion: "{{ jour.getPromotion ? jour.getPromotion.getYearLevel|e('js') : '' }}"
+
+
+
                 },
                 {% endfor %}
             ],
@@ -177,6 +199,19 @@
         });
 
         calendar.render();
+
+        document.getElementById('promotion').addEventListener('change', function () {
+            let selectedPromotion = this.value;
+            let events = calendar.getEvents();
+
+            events.forEach(event => {
+                if (selectedPromotion === "" || event.extendedProps.promotion === selectedPromotion) {
+                    event.setProp('display', 'auto'); // Afficher
+                } else {
+                    event.setProp('display', 'none'); // Masquer
+                }
+            });
+        });
 
         // Permet de rendre toute la case cliquable
         document.querySelectorAll('.fc-daygrid-day').forEach(dayCell => {

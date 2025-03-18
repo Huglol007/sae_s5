@@ -55,12 +55,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'enseignant')]
     private Collection $creneaus;
 
+    #[ORM\OneToOne(mappedBy: 'utilisateur', cascade: ['persist', 'remove'])]
+    private ?Enseignant $enseignant = null;
+
+
+
+
     public function __construct()
     {
         $this->matieres = new ArrayCollection();
         $this->ressources = new ArrayCollection();
         $this->creneaus = new ArrayCollection();
+        
     }
+
 
     public function getId(): ?int
     {
@@ -106,6 +114,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
+
+        if (in_array('ROLE_PROF_REFERENT', $this->roles)) {
+            $roles[] = 'ROLE_PROF_REFERENT';
+        }
+
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -241,4 +254,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getEnseignant(): ?Enseignant
+    {
+        return $this->enseignant;
+    }
+
+    public function setEnseignant(Enseignant $enseignant): static
+    {
+        // set the owning side of the relation if necessary
+        if ($enseignant->getUtilisateur() !== $this) {
+            $enseignant->setUtilisateur($this);
+        }
+
+        $this->enseignant = $enseignant;
+
+        return $this;
+    }
+
+
 }

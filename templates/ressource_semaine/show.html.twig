@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RessourceSemaine{% endblock %}
+
+{% block body %}
+    <h1>RessourceSemaine</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ressource_semaine.id }}</td>
+            </tr>
+            <tr>
+                <th>Semaine</th>
+                <td>{{ ressource_semaine.semaine }}</td>
+            </tr>
+            <tr>
+                <th>Cm</th>
+                <td>{{ ressource_semaine.cm }}</td>
+            </tr>
+            <tr>
+                <th>Td</th>
+                <td>{{ ressource_semaine.td }}</td>
+            </tr>
+            <tr>
+                <th>Tp</th>
+                <td>{{ ressource_semaine.tp }}</td>
+            </tr>
+            <tr>
+                <th>Ds</th>
+                <td>{{ ressource_semaine.ds }}</td>
+            </tr>
+            <tr>
+                <th>Sae</th>
+                <td>{{ ressource_semaine.sae }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ressource_semaine_index') }}">back to list</a>
+
+    <a href="{{ path('app_ressource_semaine_edit', {'id': ressource_semaine.id}) }}">edit</a>
+
+    {{ include('ressource_semaine/_delete_form.html.twig') }}
+{% endblock %}

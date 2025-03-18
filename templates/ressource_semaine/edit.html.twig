@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la Répartition des Heures{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">📅 Répartition des Heures pour <strong>{{ ressource.name }}</strong></h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: month - 1}) }}" class="btn btn-primary">⬅ Mois précédent</a>
+<h4>~ {{ monthName }} ~</h4>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: month + 1}) }}" class="btn btn-primary">Mois suivant ➡</a>
+    </div>
+
+    <div class="card shadow p-4">
+        <form method="POST">
+            {{ form_start(form) }}
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover text-center align-middle">
+                    <thead class="table-primary">
+                        <tr>
+                            <th colspan="2" class="w-25">Semaine</th>
+                            <th>CM</th>
+                            <th>TD</th>
+                            <th>TP</th>
+                            <th>DS</th>
+                            <th>SAE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for semaineForm in form.ressource_semaines.children %}
+                            <tr>
+                                <td colspan="2">
+                                    {{ form_widget(semaineForm.semaine, {
+                                        'attr': {
+                                            'class': 'form-control text-center fw-bold semaine-col',
+                                            'readonly': 'readonly'
+                                        }
+                                    }) }}
+                                </td>
+                                <td>{{ form_widget(semaineForm.cm, {'attr': {'class': 'form-control text-center'}}) }}</td>
+                                <td>{{ form_widget(semaineForm.td, {'attr': {'class': 'form-control text-center'}}) }}</td>
+                                <td>{{ form_widget(semaineForm.tp, {'attr': {'class': 'form-control text-center'}}) }}</td>
+                                <td>{{ form_widget(semaineForm.ds, {'attr': {'class': 'form-control text-center'}}) }}</td>
+                                <td>{{ form_widget(semaineForm.sae, {'attr': {'class': 'form-control text-center'}}) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success px-4">💾 Enregistrer</button>
+                <a href="{{ path('app_ressource_semaine_index') }}" class="btn btn-secondary px-4">↩ Retour</a>
+            </div>
+
+            {{ form_end(form) }}
+        </form>
+    </div>
+</div>
+
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+    }
+    .semaine-col {
+        min-width: 180px;
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock %}

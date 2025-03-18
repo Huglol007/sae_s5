@@ -27,15 +27,15 @@ class Creneau
     private string $type = 'cours';
 
 
-    #[ORM\ManyToOne(inversedBy: 'creneaus')]
+    #[ORM\ManyToOne(inversedBy: 'creneaux')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Matiere $matiere = null;
 
-    #[ORM\ManyToOne(inversedBy: 'creneaus')]
+    #[ORM\ManyToOne(inversedBy: 'creneaux')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $enseignant = null;
 
-    #[ORM\ManyToOne(inversedBy: 'creneaus')]
+    #[ORM\ManyToOne(inversedBy: 'creneaux')]
     private ?Ressource $ressource = null;
 
     #[ORM\ManyToOne(inversedBy: 'creneaux')]

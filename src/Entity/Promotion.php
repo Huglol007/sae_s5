@@ -16,7 +16,7 @@ class Promotion
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $year_level = null;
+    private ?string $year_level = null;
 
     /**
      * @var Collection<int, Creneau>
@@ -34,7 +34,7 @@ class Promotion
         return $this->id;
     }
 
-    public function getYearLevel(): ?int
+    public function getYearLevel(): ?string
     {
         return $this->year_level;
     }
@@ -54,7 +54,7 @@ class Promotion
         return $this->creneaux;
     }
 
-    public function addCreneaux(Creneau $creneaux): static
+    public function addCreneau(Creneau $creneaux): static
     {
         if (!$this->creneaux->contains($creneaux)) {
             $this->creneaux->add($creneaux);
@@ -64,7 +64,7 @@ class Promotion
         return $this;
     }
 
-    public function removeCreneaux(Creneau $creneaux): static
+    public function removeCreneau(Creneau $creneaux): static
     {
         if ($this->creneaux->removeElement($creneaux)) {
             // set the owning side to null (unless already changed)

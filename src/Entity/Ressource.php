@@ -33,6 +33,9 @@ class Ressource
     #[ORM\ManyToOne(inversedBy: 'ressources')]
     private ?User $referent = null;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private ?int $heuresSemaine = 0;
+
     /**
      * @var Collection<int, Matiere>
      */
@@ -48,10 +51,26 @@ class Ressource
     private Collection $creneaus;
 
 
+    #[ORM\OneToMany(targetEntity: Ressource::class, mappedBy: 'parentRessource', cascade: ['persist', 'remove'])]
+    private Collection $subRessources;
+
+    #[ORM\ManyToOne(targetEntity: Ressource::class, inversedBy: 'subRessources')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Ressource $parentRessource = null;
+
+    /**
+     * @var Collection<int, RessourceSemaine>
+     */
+    #[ORM\OneToMany(targetEntity: RessourceSemaine::class, mappedBy: 'ressource', cascade: ['persist', 'remove'])]
+    private Collection $ressourceSemaines;
+
+
     public function __construct()
     {
         $this->matieres = new ArrayCollection();
         $this->creneaus = new ArrayCollection();
+        $this->subRessources = new ArrayCollection();
+        $this->ressourceSemaines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,8 +134,62 @@ class Ressource
     {
         $this->referent = $referent;
 
+        if ($referent && !in_array('ROLE_PROF_REFERENT', $referent->getRoles())) {
+            throw new \Exception("L'utilisateur doit être un professeur référent pour être assigné à cette ressource.");
+        }
+
         return $this;
     }
+
+    public function getHeuresSemaine(): ?int
+    {
+        return $this->heuresSemaine;
+    }
+
+    public function setHeuresSemaine(int $heuresSemaine): static
+    {
+        $this->heuresSemaine = $heuresSemaine;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ressource>
+     */
+    public function getSubRessources(): Collection
+    {
+        return $this->subRessources;
+    }
+
+    public function addSubRessource(Ressource $subRessource): static
+    {
+        if (!$this->subRessources->contains($subRessource)) {
+            $this->subRessources->add($subRessource);
+            $subRessource->setParentRessource($this);
+        }
+        return $this;
+    }
+
+    public function removeSubRessource(Ressource $subRessource): static
+    {
+        if ($this->subRessources->removeElement($subRessource)) {
+            if ($subRessource->getParentRessource() === $this) {
+                $subRessource->setParentRessource(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getParentRessource(): ?Ressource
+    {
+        return $this->parentRessource;
+    }
+
+    public function setParentRessource(?Ressource $parentRessource): static
+    {
+        $this->parentRessource = $parentRessource;
+        return $this;
+    }
+
 
     /**
      * @return Collection<int, Creneau>
@@ -169,6 +242,36 @@ class Ressource
     {
         if ($this->matieres->removeElement($matiere)) {
             $matiere->removeRessource($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RessourceSemaine>
+     */
+    public function getRessourceSemaines(): Collection
+    {
+        return $this->ressourceSemaines;
+    }
+
+    public function addRessourceSemaine(RessourceSemaine $ressourceSemaine): static
+    {
+        if (!$this->ressourceSemaines->contains($ressourceSemaine)) {
+            $this->ressourceSemaines->add($ressourceSemaine);
+            $ressourceSemaine->setRessource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRessourceSemaine(RessourceSemaine $ressourceSemaine): static
+    {
+        if ($this->ressourceSemaines->removeElement($ressourceSemaine)) {
+            // set the owning side to null (unless already changed)
+            if ($ressourceSemaine->getRessource() === $this) {
+                $ressourceSemaine->setRessource(null);
+            }
         }
 
         return $this;
