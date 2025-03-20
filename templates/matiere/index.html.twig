@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Matiere index{% endblock %}
+{% block title %}Matiere{% endblock %}
 
 {% block body %}
-    <h1>Matiere index</h1>
+    <h1>Matiere</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
+                <th>utilisateur ID</th>
+                <th>Nom</th>
                 <th>Volume_horaire</th>
                 <th>actions</th>
             </tr>
@@ -21,8 +21,8 @@
                 <td>{{ matiere.name }}</td>
                 <td>{{ matiere.volumeHoraire }}</td>
                 <td>
-                    <a href="{{ path('app_matiere_show', {'id': matiere.id}) }}">show</a>
-                    <a href="{{ path('app_matiere_edit', {'id': matiere.id}) }}">edit</a>
+                    <a href="{{ path('app_matiere_show', {'id': matiere.id})}}" class="btn btn-info">show</a>
+                    <a href="{{ path('app_matiere_edit', {'id': matiere.id})}}" class="btn btn-warning">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +33,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_matiere_new') }}">Create new</a>
+    <a href="{{ path('app_matiere_new')}}" class="btn btn-success">Ajouter matiere</a>
 {% endblock %}

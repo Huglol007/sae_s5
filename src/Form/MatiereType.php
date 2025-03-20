@@ -18,7 +18,7 @@ class MatiereType extends AbstractType
             ->add('volume_horaire')
             ->add('enseignant', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'id',
+                'choice_label' => 'last_name',
             ])
         ;
     }

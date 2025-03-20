@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 
 #[Route('/ressource/semaine')]
-#[IsGranted('ROLE_PROF_REFERENT')]
+//#[IsGranted('ROLE_PROF_REFERENT')]
 final class RessourceSemaineController extends AbstractController
 {
     /**
