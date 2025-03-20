@@ -34,6 +34,9 @@ class RessourceSemaine
     #[ORM\Column]
     private ?float $sae = null;
 
+    #[ORM\Column]
+    private ?string $mois = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +122,18 @@ class RessourceSemaine
     public function setSae(float $sae): static
     {
         $this->sae = $sae;
+
+        return $this;
+    }
+
+    public function getMois(): ?string
+    {
+        return $this->mois;
+    }
+
+    public function setMois(?string $mois): static
+    {
+        $this->mois = $mois;
 
         return $this;
     }

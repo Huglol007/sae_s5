@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
 
 class RessourceSemaineType extends AbstractType
 {
@@ -32,6 +34,9 @@ class RessourceSemaineType extends AbstractType
             ])
             ->add('sae', IntegerType::class, [
                 'label' => 'SAE',
+            ])
+            ->add('mois', HiddenType::class, [ // Champ caché pour stocker le mois
+                'mapped' => false
             ]);
     }
 

@@ -6,16 +6,25 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">📅 Répartition des Heures pour <strong>{{ ressource.name }}</strong></h2>
 
+    {# Liste des mois avec le mois courant sélectionné #}
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: month - 1}) }}" class="btn btn-primary">⬅ Mois précédent</a>
-<h4>~ {{ monthName }} ~</h4>
-        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: month + 1}) }}" class="btn btn-primary">Mois suivant ➡</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '01'}) }}" class="btn btn-primary">Janvier</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '02'}) }}" class="btn btn-primary">Février</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '03'}) }}" class="btn btn-primary">Mars</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '04'}) }}" class="btn btn-primary">Avril</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '05'}) }}" class="btn btn-primary">Mai</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '06'}) }}" class="btn btn-primary">Juin</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '07'}) }}" class="btn btn-primary">Juillet</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '08'}) }}" class="btn btn-primary">Août</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '09'}) }}" class="btn btn-primary">Septembre</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '10'}) }}" class="btn btn-primary">Octobre</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '11'}) }}" class="btn btn-primary">Novembre</a>
+        <a href="{{ path('app_ressource_semaine_edit', {id: ressource.id, month: '12'}) }}" class="btn btn-primary">Décembre</a>
     </div>
 
     <div class="card shadow p-4">
         <form method="POST">
             {{ form_start(form) }}
-
             <div class="table-responsive">
                 <table class="table table-striped table-hover text-center align-middle">
                     <thead class="table-primary">
@@ -49,12 +58,10 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-success px-4">💾 Enregistrer</button>
                 <a href="{{ path('app_ressource_semaine_index') }}" class="btn btn-secondary px-4">↩ Retour</a>
             </div>
-
             {{ form_end(form) }}
         </form>
     </div>
