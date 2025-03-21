@@ -20,7 +20,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY .env .env
 
 # Définir les variables d'environnement sans .env
+
 ENV APP_ENV=prod
+ENV SYMFONY_SKIP_CACHE_CLEAR 1
+
 ENV DATABASE_URL="pgsql://sae_user:password@vps-b61ebc55.vps.ovh.net:5432/sae"
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
