@@ -17,6 +17,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Carbon\Carbon;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+
 
 #[Route('/ressource/semaine')]
 final class RessourceSemaineController extends AbstractController
@@ -205,4 +208,29 @@ final class RessourceSemaineController extends AbstractController
 
         return $this->redirectToRoute('app_ressource_semaine_index');
     }
+
+
+
+    #[Route('/api/ressource/{id}/matieres', name: 'api_ressource_matieres', methods: ['GET'])]
+    public function apiMatieres(Ressource $ressource): JsonResponse
+    {
+        $matieres = [];
+
+        foreach ($ressource->getMatieres() as $matiere) {
+            $matieres[] = [
+                'id' => $matiere->getId(),
+                'name' => $matiere->getName(),
+            ];
+        }
+
+        return $this->json([
+            'id' => $ressource->getId(),
+            'name' => $ressource->getName(),
+            'type' => $ressource->getType(),
+            'state' => $ressource->getState(),
+            'matieres' => $matieres,
+        ]);
+    }
+
+
 }

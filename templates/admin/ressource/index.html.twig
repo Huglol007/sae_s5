@@ -45,13 +45,19 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="matieres" class="form-label">Matières associées</label>
-                            <select name="matieres[]" id="matieres" class="form-control" multiple>
-                                {% for matiere in matieres %}
-                                    <option value="{{ matiere.id }}">{{ matiere.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                             <label class="form-label">Matières associées</label>
+                             <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                                 {% for matiere in matieres %}
+                                     <div class="form-check">
+                                         <input class="form-check-input" type="checkbox" name="matieres[]" value="{{ matiere.id }}" id="matiere_{{ matiere.id }}">
+                                         <label class="form-check-label" for="matiere_{{ matiere.id }}">
+                                             {{ matiere.name }}
+                                         </label>
+                                     </div>
+                                 {% endfor %}
+                             </div>
+                         </div>
+
 
                         <button type="submit" class="btn btn-success w-100">Ajouter</button>
                     </form>

@@ -37,12 +37,12 @@ class Matiere
      * @var Collection<int, Creneau>
      */
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'matiere')]
-    private Collection $creneaus;
+    private Collection $creneaux;
 
     public function __construct()
     {
         $this->ressources = new ArrayCollection();
-        $this->creneaus = new ArrayCollection();
+        $this->creneaux = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,13 +91,13 @@ class Matiere
      */
     public function getCreneaus(): Collection
     {
-        return $this->creneaus;
+        return $this->creneaux;
     }
 
     public function addCreneau(Creneau $creneau): static
     {
-        if (!$this->creneaus->contains($creneau)) {
-            $this->creneaus->add($creneau);
+        if (!$this->creneaux->contains($creneau)) {
+            $this->creneaux->add($creneau);
             $creneau->setMatiere($this);
         }
 
@@ -106,7 +106,7 @@ class Matiere
 
     public function removeCreneau(Creneau $creneau): static
     {
-        if ($this->creneaus->removeElement($creneau)) {
+        if ($this->creneaux->removeElement($creneau)) {
             // set the owning side to null (unless already changed)
             if ($creneau->getMatiere() === $this) {
                 $creneau->setMatiere(null);

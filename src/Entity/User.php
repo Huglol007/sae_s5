@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Creneau>
      */
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'enseignant')]
-    private Collection $creneaus;
+    private Collection $creneaux;
 
     #[ORM\OneToOne(mappedBy: 'utilisateur', cascade: ['persist', 'remove'])]
     private ?Enseignant $enseignant = null;
@@ -65,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->matieres = new ArrayCollection();
         $this->ressources = new ArrayCollection();
-        $this->creneaus = new ArrayCollection();
+        $this->creneaux = new ArrayCollection();
         
     }
 
@@ -230,13 +230,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getCreneaus(): Collection
     {
-        return $this->creneaus;
+        return $this->creneaux;
     }
 
     public function addCreneau(Creneau $creneau): static
     {
-        if (!$this->creneaus->contains($creneau)) {
-            $this->creneaus->add($creneau);
+        if (!$this->creneaux->contains($creneau)) {
+            $this->creneaux->add($creneau);
             $creneau->setEnseignant($this);
         }
 
@@ -245,7 +245,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeCreneau(Creneau $creneau): static
     {
-        if ($this->creneaus->removeElement($creneau)) {
+        if ($this->creneaux->removeElement($creneau)) {
             // set the owning side to null (unless already changed)
             if ($creneau->getEnseignant() === $this) {
                 $creneau->setEnseignant(null);

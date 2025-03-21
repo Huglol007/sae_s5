@@ -3,57 +3,91 @@
 {% block title %}Mes Ressources{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Mes Ressources</h1>
+<div class="container py-5">
+    <h1 class="text-center mb-5">📚 Mes Ressources</h1>
 
-    <div class="row">
-        <div class="col-md-4">
-            <h3>Professeur référent</h3>
-            <button class="btn btn-primary w-100">Cours</button>
-            <button class="btn btn-secondary w-100 mt-2">Ressources</button>
-        </div>
-
-        <div class="col-md-4">
-            <h3>Ressources disponibles</h3>
-            {% for ressource in ressources %}
-                <div class="resource-item">
-                    <input type="radio" name="selected_ressource" value="{{ ressource.id }}" id="ressource_{{ ressource.id }}">
-                    <label for="ressource_{{ ressource.id }}">{{ ressource.name }}</label>
-                </div>
-            {% else %}
-                <p>Aucune ressource disponible.</p>
-            {% endfor %}
-        </div>
-
-        <div class="col-md-4">
-            <h3>Détails</h3>
-            <div id="ressource-details">
-                <p>Sélectionnez une ressource.</p>
+    <div class="row g-4">
+        <!-- Bloc de navigation -->
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action active">
+                    Professeur référent
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">Cours</a>
+                <a href="#" class="list-group-item list-group-item-action">Ressources</a>
             </div>
         </div>
-    </div>
 
-    <button class="btn btn-primary mt-3" id="open_calendar" disabled>Configurer la répartition</button>
+        <!-- Bloc de sélection de ressource -->
+        <div class="col-md-5">
+            <h4 class="mb-3">Ressources disponibles</h4>
+            <div class="list-group">
+                {% for ressource in ressources %}
+                    <label class="list-group-item d-flex justify-content-between align-items-center">
+                        <input type="radio" class="form-check-input me-2" name="selected_ressource" value="{{ ressource.id }}">
+                        {{ ressource.name }}
+                    </label>
+                {% else %}
+                    <p class="text-muted">Aucune ressource disponible.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Bloc de détails -->
+        <div class="col-md-4">
+            <h4 class="mb-3">Détails</h4>
+            <div class="card">
+                <div class="card-body" id="ressource-details">
+                    <p class="text-muted">Sélectionnez une ressource pour voir les détails.</p>
+                </div>
+            </div>
+
+            <button class="btn btn-outline-primary w-100 mt-3" id="open_calendar" disabled>Configurer la répartition</button>
+        </div>
+    </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const resourceRadios = document.querySelectorAll('input[name="selected_ressource"]');
-    const detailsDiv = document.getElementById('ressource-details');
-    const openCalendarBtn = document.getElementById('open_calendar');
+    const radios = document.querySelectorAll('input[name="selected_ressource"]');
+    const details = document.getElementById('ressource-details');
+    const openBtn = document.getElementById('open_calendar');
 
-    resourceRadios.forEach(radio => {
-        radio.addEventListener('change', function () {
-            openCalendarBtn.disabled = false;
-            detailsDiv.innerHTML = `<p>Vous avez sélectionné : <strong>${this.nextElementSibling.innerText}</strong></p>`;
-            openCalendarBtn.dataset.ressourceId = this.value;
+    radios.forEach(radio => {
+        radio.addEventListener('change', async function () {
+            openBtn.disabled = false;
+            openBtn.dataset.ressourceId = this.value;
+
+            try {
+                const ressourceId = this.value;
+                const response = await fetch(`/ressource/semaine/api/ressource/${ressourceId}/matieres`);
+                const data = await response.json();
+
+                let html = `<h5>${data.name}</h5>`;
+                html += `<p><strong>Type :</strong> ${data.type}</p>`;
+                html += `<p><strong>État :</strong> ${data.state}</p>`;
+
+                if (data.matieres.length > 0) {
+                    html += `<p><strong>Matières associées :</strong></p><ul>`;
+                    data.matieres.forEach(m => {
+                        html += `<li>${m.name}</li>`;
+                    });
+                    html += `</ul>`;
+                } else {
+                    html += `<p><em>Aucune matière associée.</em></p>`;
+                }
+
+                details.innerHTML = html;
+            } catch (e) {
+                details.innerHTML = `<p class="text-danger">Erreur de chargement des détails.</p>`;
+            }
         });
     });
 
-    openCalendarBtn.addEventListener('click', function () {
-        const ressourceId = this.dataset.ressourceId;
-        if (ressourceId) {
-            window.location.href = `/ressource/semaine/new?ressource=${ressourceId}`;
+    openBtn.addEventListener('click', () => {
+        const id = openBtn.dataset.ressourceId;
+        if (id) {
+            window.location.href = `/ressource/semaine/new?ressource=${id}`;
         }
     });
 });

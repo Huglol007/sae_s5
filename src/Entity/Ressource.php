@@ -49,7 +49,7 @@ class Ressource
      * @var Collection<int, Creneau>
      */
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'ressource')]
-    private Collection $creneaus;
+    private Collection $creneaux;
 
 
     #[ORM\OneToMany(targetEntity: Ressource::class, mappedBy: 'parentRessource', cascade: ['persist', 'remove'])]
@@ -69,7 +69,7 @@ class Ressource
     public function __construct()
     {
         $this->matieres = new ArrayCollection();
-        $this->creneaus = new ArrayCollection();
+        $this->creneaux = new ArrayCollection();
         $this->subRessources = new ArrayCollection();
         $this->ressourceSemaines = new ArrayCollection();
     }
@@ -197,13 +197,13 @@ class Ressource
      */
     public function getCreneaus(): Collection
     {
-        return $this->creneaus;
+        return $this->creneaux;
     }
 
     public function addCreneau(Creneau $creneau): static
     {
-        if (!$this->creneaus->contains($creneau)) {
-            $this->creneaus->add($creneau);
+        if (!$this->creneaux->contains($creneau)) {
+            $this->creneaux->add($creneau);
             $creneau->setRessource($this);
         }
 
@@ -212,7 +212,7 @@ class Ressource
 
     public function removeCreneau(Creneau $creneau): static
     {
-        if ($this->creneaus->removeElement($creneau)) {
+        if ($this->creneaux->removeElement($creneau)) {
             // set the owning side to null (unless already changed)
             if ($creneau->getRessource() === $this) {
                 $creneau->setRessource(null);

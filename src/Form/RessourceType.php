@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Matiere;
 use App\Entity\Ressource;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,13 +16,18 @@ class RessourceType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('type')
-            ->add('state')
-            ->add('referent', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+            ->add('matiere', EntityType::class, [
+                'class' => Matiere::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => false,
+                'label' => 'Matières'
             ])
-        ;
+            ->add('type')
+            ->add('semestre')
+            ->add('state')
+            ->add('heuresSemaine');
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
