@@ -21,7 +21,7 @@ COPY .env .env
 
 # Définir les variables d'environnement sans .env
 ENV APP_ENV=prod
-ENV DATABASE_URL="postgresql://hugo:EVPVvZ44qvj2q8vfHItSsCEls1x3Od5t@dpg-cv7vigt6l47c73f3c9u0-a.frankfurt-postgres.render.com:5432/sae_5_ecu8?sslmode=require"
+ENV DATABASE_URL="pgsql://sae_user:password@vps-b61ebc55.vps.ovh.net:5432/sae"
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 
