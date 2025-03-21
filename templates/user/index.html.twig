@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Utilisateur s{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>Utilisateur</h>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Password</th>
+                <th>Id Utilisateur</th>
+                <th>Nom d'utilisateur</th>
+                <th>Mot de passe</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>First_name</th>
-                <th>Last_name</th>
+                <th>Prénom</th>
+                <th>Nom de famille</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,14 +23,14 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.password }}</td>
+                <td>******************</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}"class="btn btn-info">show</a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}"class="btn btn-warning">edit</a>
                 </td>
             </tr>
         {% else %}

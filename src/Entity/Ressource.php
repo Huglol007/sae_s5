@@ -36,6 +36,7 @@ class Ressource
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private ?int $heuresSemaine = 0;
 
+
     /**
      * @var Collection<int, Matiere>
      */
@@ -276,5 +277,6 @@ class Ressource
 
         return $this;
     }
+
 
 }

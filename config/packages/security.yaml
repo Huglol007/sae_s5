@@ -2,7 +2,7 @@ security:
     # Gestion des hashages de mot de passe
     password_hashers:
         App\Entity\User:
-            algorithm: auto
+            algorithm:  plaintext
     # Gestion des providers utilisateurs
     providers:
         users_in_memory:
@@ -12,7 +12,7 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+                property: username
 
 
 

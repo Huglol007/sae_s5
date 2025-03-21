@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use Symfony\Component\Form\FormError;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -24,27 +25,37 @@ final class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
+{
+    $user = new User();
+    $form = $this->createForm(UserType::class, $user);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Vérifier si l'utilisateur existe déjà
+        $existingUser = $userRepository->findOneBy(['email' => $user->getEmail()]);
+
+        if ($existingUser) {
+            $form->get('email')->addError(new FormError('Cet email est déjà utilisé.'));
+        } else {
             $user->setPassword(
                 $passwordHasher->hashPassword($user, $user->getPassword())
             );
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Utilisateur créé avec succès.');
+
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
     }
+
+    return $this->render('user/new.html.twig', [
+        'user' => $user,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response

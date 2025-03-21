@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'enseignant{% endblock %}
+
+{% block body %}
+    <h1>Détails de l'enseignant</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom :</th>
+                <td>{{ enseignant.utilisateur.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Prénom :</th>
+                <td>{{ enseignant.utilisateur.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Type d'enseignant :</th>
+                <td>{{ enseignant.typeEnseignant.type }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_enseignant_index') }}" class="btn btn-secondary">Retour à la liste</a>
+    <a href="{{ path('app_enseignant_edit', {'id': enseignant.id}) }}" class="btn btn-primary">Modifier</a>
+{% endblock %}
